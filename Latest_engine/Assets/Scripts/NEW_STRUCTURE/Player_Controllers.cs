@@ -36,6 +36,7 @@ public class Player_Controllers : MonoBehaviour {
 	public KeyCode Down = KeyCode.DownArrow;
 	public KeyCode Left = KeyCode.LeftArrow;
 	public KeyCode Right = KeyCode.RightArrow;
+	public float keyboardSpeedAdjust = 1.5f;
 	
 	private Vector3 moveTester;
 	private bool isMoveTesterAssigned = false;
@@ -74,15 +75,15 @@ public class Player_Controllers : MonoBehaviour {
 			
 			//LATERAL - KEYBOARD
 			if(movement.x == 0 && movement.z == 0){
-				if(Input.GetKeyDown(Up))
-					movement.z += 5;
-				else if(Input.GetKeyDown(Down))
-					movement.z -= 5;
+				if(Input.GetKey(Up))
+					movement.z += keyboardSpeedAdjust;
+				else if(Input.GetKey(Down))
+					movement.z -= keyboardSpeedAdjust;
 				
-				if(Input.GetKeyDown(Left))
-					movement.x -= 5;
-				else if(Input.GetKeyDown(Right))
-					movement.x += 5;
+				if(Input.GetKey(Left))
+					movement.x -= keyboardSpeedAdjust;
+				else if(Input.GetKey(Right))
+					movement.x += keyboardSpeedAdjust;
 				
 				transform.position += movement*Time.deltaTime*playerSpeed;
 			}
