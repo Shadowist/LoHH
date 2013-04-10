@@ -66,6 +66,11 @@ public class Animatic : MonoBehaviour {
 					
 				index++;
 			}
+			
+			while(GamePad.GetState(PlayerIndex.One).Buttons.A == ButtonState.Pressed ||
+            GamePad.GetState(PlayerIndex.Two).Buttons.A == ButtonState.Pressed ||
+            GamePad.GetState(PlayerIndex.Three).Buttons.A == ButtonState.Pressed ||
+            GamePad.GetState(PlayerIndex.Four).Buttons.A == ButtonState.Pressed);
 		}
 		
 		/*

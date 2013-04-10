@@ -5,7 +5,6 @@ using XInputDotNetPure;
 [RequireComponent (typeof(BoxCollider))]
 public class Shade : Player_Controllers {
 	//Character Controller
-	//private Rigidbody controller;
 	
 	public float maxDistance = 100.0f;	
 	public float controllerVib = 0.01f;
@@ -26,7 +25,6 @@ public class Shade : Player_Controllers {
 	
 	private int closestTarget = 0;
 
-	//private int quadrant;
 	public bool vibrationActive = true;
 	
 	private Scouts target;
@@ -102,20 +100,20 @@ public class Shade : Player_Controllers {
 		GamePad.SetVibration(0,0,0);
 	}
 	
+	//COLLISION CHECKS
 	void OnTriggerEnter(Collider targetCollider) {
-		if(targetCollider != null){
-	        //Debug.Log(targetCollider.name + " killed");
+		
+		//When shade touches scouts
+		if(targetCollider != null && targetCollider.gameObject.tag == "Scout"){
 	        target = targetCollider.gameObject.GetComponent("Scouts") as Scouts;
 	        targetFlashlight = targetCollider.gameObject.GetComponent("FlashlightScript") as FlashlightScript;
 			targetAudioSource = targetCollider.gameObject.GetComponent("AudioSource") as AudioSource;
 			
-			//if(target == null)
-			//	Debug.Log ("Broken =(");
-			
 			if(target != null && targetFlashlight != null && targetAudioSource != null){
 		        if(target.movementEnabled){ //FUUUUUUUUUU
 					target.animation.Play("faint",PlayMode.StopAll);
-					
+					target.audio.PlayOneShot(target.killSound);
+					audio.PlayOneShot(killSound);
 				}
 				
 				target.movementEnabled = false;
@@ -125,6 +123,7 @@ public class Shade : Player_Controllers {
 		        GamePad.SetVibration(0, 1, 1);
 			}
 		}
+		//Scout/Shade interaction END
     }
 	
 	void OnApplicationQuit () {

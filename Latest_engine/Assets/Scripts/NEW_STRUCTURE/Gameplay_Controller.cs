@@ -14,6 +14,9 @@ public class Gameplay_Controller : MonoBehaviour {
 	public Texture2D runnersWin;
 	public Texture2D monsterWins;
 	
+	//GUI!
+	private bool ShowGameplayMenu = false;
+	
 	// Use this for initialization
 	void Start () {
 	
@@ -37,6 +40,11 @@ public class Gameplay_Controller : MonoBehaviour {
 			monster = GameObject.Find("Monster");
 			Destroy(monster);
 			GamePad.SetVibration(0,0,0);
+		
+		if(Input.GetKeyDown(KeyCode.Escape) && ShowGameplayMenu == false)
+			ShowGameplayMenu = true;
+		else if(Input.GetKeyDown(KeyCode.Escape) && ShowGameplayMenu == true)
+			ShowGameplayMenu = false;
 	}
 	
 	public void IncCoffinsTagged(){
@@ -63,5 +71,18 @@ public class Gameplay_Controller : MonoBehaviour {
 	
 	public void ResetRunnersTagged(){
 		runnersTagged = 0;
+	}
+	
+	void OnGUI(){
+		GUI.Box (new Rect(10,10,100,90), "Game Menu");
+		
+		if(GUI.Button (new Rect(20,40,90,20), "Close Menu"))
+			ShowGameplayMenu = false;
+		
+		if(GUI.Button (new Rect(20,70,90,20), "Restart Level"))
+			Application.LoadLevel("02");
+		
+		if(GUI.Button (new Rect(20,100,90,20), "Exit"))
+			Application.Quit();
 	}
 }

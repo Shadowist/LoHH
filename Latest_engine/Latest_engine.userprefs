@@ -1,13 +1,11 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\NEW_STRUCTURE\SphereDetection.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\NEW_STRUCTURE\Shade.cs">
     <Files>
-      <File FileName="Assets\Scripts\NEW_STRUCTURE\Gameplay_Controller.cs" Line="11" Column="29" />
-      <File FileName="Assets\Scripts\NEW_STRUCTURE\Player_Controllers.cs" Line="9" Column="1" />
-      <File FileName="Assets\Scripts\NEW_STRUCTURE\Scouts.cs" Line="29" Column="14" />
-      <File FileName="Assets\Scripts\NEW_STRUCTURE\Shade.cs" Line="96" Column="23" />
-      <File FileName="Assets\Scripts\NEW_STRUCTURE\Animatic.cs" Line="15" Column="27" />
-      <File FileName="Assets\Scripts\NEW_STRUCTURE\SphereDetection.cs" Line="102" Column="32" />
+      <File FileName="Assets\Scripts\NEW_STRUCTURE\Animatic.cs" Line="51" Column="4" />
+      <File FileName="Assets\Scripts\NEW_STRUCTURE\Player_Controllers.cs" Line="64" Column="6" />
+      <File FileName="Assets\Scripts\NEW_STRUCTURE\Gameplay_Controller.cs" Line="47" Column="29" />
+      <File FileName="Assets\Scripts\NEW_STRUCTURE\Shade.cs" Line="23" Column="2" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -16,7 +14,8 @@
             <Node name="Assets" expanded="True">
               <Node name="Scripts" expanded="True">
                 <Node name="NEW_STRUCTURE" expanded="True">
-                  <Node name="SphereDetection.cs" selected="True" />
+                  <Node name="Utilities" expanded="True" />
+                  <Node name="Shade.cs" selected="True" />
                 </Node>
               </Node>
             </Node>

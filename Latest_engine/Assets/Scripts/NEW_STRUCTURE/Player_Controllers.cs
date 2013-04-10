@@ -32,6 +32,11 @@ public class Player_Controllers : MonoBehaviour {
     private int quadrant;
     private Vector3 currentDir = Vector3.zero;
 	
+	public KeyCode Up = KeyCode.UpArrow;
+	public KeyCode Down = KeyCode.DownArrow;
+	public KeyCode Left = KeyCode.LeftArrow;
+	public KeyCode Right = KeyCode.RightArrow;
+	
 	private Vector3 moveTester;
 	private bool isMoveTesterAssigned = false;
 	
@@ -50,18 +55,39 @@ public class Player_Controllers : MonoBehaviour {
         if (movementEnabled) {
             movement = Vector3.zero;
 			
-			if((moveTester != transform.position)&& (isMoveTesterAssigned)){
-				animation.CrossFade ("walk");
+			if(gameObject.tag == "Scout"){
+				if((moveTester != transform.position)&& (isMoveTesterAssigned)){
+					animation.CrossFade ("walk");
+				}
+				else{
+					animation.Play("idle", PlayMode.StopAll);
+				}
 			}
-			else{
-				animation.Play("idle", PlayMode.StopAll);
-			}
+			
+			//LATERAL - CONTROLLER
             state = GamePad.GetState(playerNumber);
             movement.x = state.ThumbSticks.Left.X;
             movement.z = state.ThumbSticks.Left.Y;
             transform.position += movement * Time.deltaTime * playerSpeed;
 			moveTester = transform.position;
 			isMoveTesterAssigned = true;
+			
+			//LATERAL - KEYBOARD
+			if(movement.x == 0 && movement.z == 0){
+				if(Input.GetKeyDown(Up))
+					movement.z += 5;
+				else if(Input.GetKeyDown(Down))
+					movement.z -= 5;
+				
+				if(Input.GetKeyDown(Left))
+					movement.x -= 5;
+				else if(Input.GetKeyDown(Right))
+					movement.x += 5;
+				
+				transform.position += movement*Time.deltaTime*playerSpeed;
+			}
+			
+			//LATERAL - END
 
             targetDir = Mathf.Atan(state.ThumbSticks.Right.Y / state.ThumbSticks.Right.X);
             targetDir *= Mathf.Rad2Deg;
