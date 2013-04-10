@@ -5,7 +5,7 @@ using XInputDotNetPure;
 [RequireComponent (typeof(BoxCollider))]
 public class Shade : Player_Controllers {
 	//Character Controller
-	private Rigidbody controller;
+	//private Rigidbody controller;
 	
 	public float maxDistance = 100.0f;	
 	public float controllerVib = 0.01f;
@@ -26,7 +26,7 @@ public class Shade : Player_Controllers {
 	
 	private int closestTarget = 0;
 
-	private int quadrant;
+	//private int quadrant;
 	public bool vibrationActive = true;
 	
 	private Scouts target;

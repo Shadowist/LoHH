@@ -6,10 +6,9 @@ public class Translating : MonoBehaviour {
 
 	//Character Controller
 	private Rigidbody controller;
-	private BoxCollider collider;
 	
 	//Movement variables
-	public float playerSpeed = 6.0f;
+	public float playerSpeed = 3.5f;
 	private Vector3 movement = Vector3.zero;
 
     public bool movementEnabled = true;
@@ -39,23 +38,15 @@ public class Translating : MonoBehaviour {
 	private coffin targetCoffin;
 	public int coffinsTagged = 0;
 	
+	private bool hasBeenTagged = false;
+	public WinCondition WINCONDITION;
 	// Use this for initialization
 	void Start () {
-		if(!GetComponent("Rigidbody")){
-			print("No Rigidbody connected! Creating component...");
-			controller = gameObject.AddComponent("Rigidbody") as Rigidbody;
-		}else{
-			controller = rigidbody;
-			print("Rigidbody already connected! Using current component...");
-		}
-		
-		if(!GetComponent("BoxCollider")){
-			print("No BoxCollider connected! Creating component...");
-			collider = gameObject.AddComponent("BoxCollider") as BoxCollider;
-		}else{
-			//collider = collider;
-			print("BoxCollider already connected! Using current component...");
-		}		
+		if(!GetComponent("Rigidbody"))
+			gameObject.AddComponent("Rigidbody");
+
+		if(!GetComponent("BoxCollider"))
+			gameObject.AddComponent("BoxCollider");
 	} 
 
 	void FixedUpdate () {
@@ -75,17 +66,17 @@ public class Translating : MonoBehaviour {
 			moveTester = transform.position;
 			isMoveTesterAssigned = true;
 
-            targetDir = Mathf.Atan(state.ThumbSticks.Left.Y / state.ThumbSticks.Left.X);
+            targetDir = Mathf.Atan(state.ThumbSticks.Right.Y / state.ThumbSticks.Right.X);
             targetDir *= Mathf.Rad2Deg;
 
             //Determine quadrant
-            if (state.ThumbSticks.Left.Y >= 0 && state.ThumbSticks.Left.X >= 0)
+            if (state.ThumbSticks.Right.Y >= 0 && state.ThumbSticks.Right.X >= 0)
                 quadrant = 1;
-            else if (state.ThumbSticks.Left.Y >= 0 && state.ThumbSticks.Left.X < 0)
+            else if (state.ThumbSticks.Right.Y >= 0 && state.ThumbSticks.Right.X < 0)
                 quadrant = 2;
-            else if (state.ThumbSticks.Left.Y < 0 && state.ThumbSticks.Left.X < 0)
+            else if (state.ThumbSticks.Right.Y < 0 && state.ThumbSticks.Right.X < 0)
                 quadrant = 3;
-            else if (state.ThumbSticks.Left.Y < 0 && state.ThumbSticks.Left.X >= 0)
+            else if (state.ThumbSticks.Right.Y < 0 && state.ThumbSticks.Right.X >= 0)
                 quadrant = 4;
 
             //Convert to 0-360 degrees
@@ -110,17 +101,26 @@ public class Translating : MonoBehaviour {
 
             if (!float.IsNaN(currentDir.y))
                 transform.eulerAngles = currentDir;
-        }
+        } else if (!movementEnabled && !hasBeenTagged) {
+			Debug.Log ("Runner has been tagged!");
+			
+			WINCONDITION.IncRunnersTagged();
+			hasBeenTagged = true;
+		}
 	}
 	
 	void OnTriggerEnter (Collider targetCollider) {
-		if(targetCollider != null){
+		if(targetCollider != null && targetCollider.name == "coffin"){
 			targetCoffin = targetCollider.GetComponent("coffin") as coffin;
 			
 			if(!targetCoffin.hasBeenPlayed){
 				targetCoffin.animation.Play("open", PlayMode.StopAll);
 				coffinsTagged++;
 				targetCoffin.hasBeenPlayed = true;
+				
+				WINCONDITION.IncCoffinsTagged();
+				
+				Debug.Log("Coffin Tagged!");
 			}
 		}
 	}

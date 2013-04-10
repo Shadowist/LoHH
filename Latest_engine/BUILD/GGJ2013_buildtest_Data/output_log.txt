@@ -15,8 +15,8 @@ Platform assembly: D:\GGJ2013_Build\BUILD\GGJ2013_buildtest_Data\Managed\XInputD
 Loading D:\GGJ2013_Build\BUILD\GGJ2013_buildtest_Data\Managed\XInputDotNetPure.dll into Unity Child Domain
 - Completed reload, in  0.068 seconds
 desktop: 1920x1080 60Hz; virtual: 1920x1080 at 0,0
-<RI> Initializing input.
-<RI> Input initialized.
+<RI> Initializing input.
+<RI> Input initialized.
 Rigidbody already connected! Using current component...
  
 (Filename: C:/BuildAgent/work/812c4f5049264fad/Runtime/ExportGenerated/StandalonePlayer/UnityEngineDebug.cpp Line: 43)

@@ -4,9 +4,10 @@ using XInputDotNetPure;
 
 public class KillCube : MonoBehaviour {
 
-    private Translating target;
+    private Scouts target;
     private FlashlightScript targetFlashlight;
 	private AudioSource targetAudioSource;
+	public AudioClip killSound;
 
 	// Use this for initialization
 	void Start () {
@@ -21,7 +22,7 @@ public class KillCube : MonoBehaviour {
     void OnTriggerEnter(Collider targetCollider) {
 		if(targetCollider != null){
 	        //Debug.Log(targetCollider.name + " killed");
-	        target = targetCollider.gameObject.GetComponent("Translating") as Translating;
+	        target = targetCollider.gameObject.GetComponent("Scouts") as Scouts;
 	        targetFlashlight = targetCollider.gameObject.GetComponent("FlashlightScript") as FlashlightScript;
 			targetAudioSource = targetCollider.gameObject.GetComponent("AudioSource") as AudioSource;
 			
@@ -31,6 +32,7 @@ public class KillCube : MonoBehaviour {
 			if(target != null && targetFlashlight != null && targetAudioSource != null){
 		        if(target.movementEnabled){ //FUUUUUUUUUU
 					target.animation.Play("faint",PlayMode.StopAll);
+					
 				}
 				
 				target.movementEnabled = false;

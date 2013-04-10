@@ -6,18 +6,18 @@ public class FlashlightScript : MonoBehaviour
 {
 	public Light flashLight;
 	public Light areaLight;
-	public float duration = 3.0f;
-	public int maxSpotRange = 40;
-	public int minSpotRange = 17;
-	public int maxAreaRange = 20;
+	private float duration = 4.0f;
+	public int maxSpotRange = 35;
+	public int minSpotRange = 14;
+	public int maxAreaRange = 2;
 	public int minAreaRange = 10;
-	public float minSpotIntensity = 1.5f;
-	public float maxSpotIntensity = 1.5f;
+	public float minSpotIntensity = 8f;
+	public float maxSpotIntensity = 8f;
 	public float minAreaIntensity = 1.5f;
 	public float maxAreaIntensity = 1.5f;
-	public float flickerSpeed = 2.0f;
-	public float rechargeTime = 2.0f;
-	public float flickerLength = 0.25f;
+	private float flickerSpeed = 4f;
+	private float rechargeTime = 10f;
+	private float flickerLength = 0.5f;
     public PlayerIndex playerNumber = PlayerIndex.Two;
 	//public KeyCode activateKey = KeyCode.E;
 	
@@ -26,7 +26,7 @@ public class FlashlightScript : MonoBehaviour
 	private float tempTime;
 	private bool isTimeAssigned = false;
 
-    public bool isActivated = true;
+    public bool isActivated = true; // for debugging
 
 	void Start()
 	{
@@ -77,7 +77,7 @@ public class FlashlightScript : MonoBehaviour
 	void ChargeFlashlight()
 	{
 		isLightCharged = false;
-		bool isLightReady = false;
+		//bool isLightReady = false;
 		if(!isTimeAssigned)
 		{
 			tempTime = Time.timeSinceLevelLoad;
