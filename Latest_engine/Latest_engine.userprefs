@@ -1,10 +1,13 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/NEW_STRUCTURE/Player_Controllers.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/NEW_STRUCTURE/Animatic.cs">
     <Files>
-      <File FileName="Assets/Scripts/NEW_STRUCTURE/Player_Controllers.cs" Line="177" Column="55" />
-      <File FileName="Assets/Scripts/NEW_STRUCTURE/Gameplay_Controller.cs" Line="77" Column="30" />
-      <File FileName="Assets/Scripts/NEW_STRUCTURE/MainMenu.cs" Line="20" Column="60" />
+      <File FileName="Assets/Scripts/NEW_STRUCTURE/Player_Controllers.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/NEW_STRUCTURE/Gameplay_Controller.cs" Line="44" Column="38" />
+      <File FileName="Assets/Scripts/NEW_STRUCTURE/MainMenu.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/NEW_STRUCTURE/RadarDetector.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/NEW_STRUCTURE/Scouts.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/NEW_STRUCTURE/Animatic.cs" Line="79" Column="54" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -13,7 +16,7 @@
             <Node name="Assets" expanded="True">
               <Node name="Scripts" expanded="True">
                 <Node name="NEW_STRUCTURE" expanded="True">
-                  <Node name="Player_Controllers.cs" selected="True" />
+                  <Node name="Animatic.cs" selected="True" />
                 </Node>
               </Node>
             </Node>

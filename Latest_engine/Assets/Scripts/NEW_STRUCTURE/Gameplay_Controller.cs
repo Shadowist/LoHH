@@ -15,7 +15,7 @@ public class Gameplay_Controller : MonoBehaviour {
 	public Texture2D monsterWins;
 	
 	//GUI!
-	private bool ShowGameplayMenu = false;
+	private bool ShowGameplayMenu = true;
 	
 	// Use this for initialization
 	void Start () {
@@ -41,9 +41,19 @@ public class Gameplay_Controller : MonoBehaviour {
 			Destroy(monster);
 			GamePad.SetVibration(0,0,0);
 		
-		if(Input.GetKeyDown(KeyCode.Escape) && ShowGameplayMenu == false)
+		if((Input.GetKeyDown(KeyCode.Escape) || 
+			GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed ||
+			GamePad.GetState(PlayerIndex.Two).Buttons.Start == ButtonState.Pressed ||
+			GamePad.GetState(PlayerIndex.Three).Buttons.Start == ButtonState.Pressed ||
+			GamePad.GetState(PlayerIndex.Four).Buttons.Start == ButtonState.Pressed) &&
+			ShowGameplayMenu == false)
 			ShowGameplayMenu = true;
-		else if(Input.GetKeyDown(KeyCode.Escape) && ShowGameplayMenu == true)
+		else if((Input.GetKeyDown(KeyCode.Escape) || 
+			GamePad.GetState(PlayerIndex.One).Buttons.Start == ButtonState.Pressed ||
+			GamePad.GetState(PlayerIndex.Two).Buttons.Start == ButtonState.Pressed ||
+			GamePad.GetState(PlayerIndex.Three).Buttons.Start == ButtonState.Pressed ||
+			GamePad.GetState(PlayerIndex.Four).Buttons.Start == ButtonState.Pressed) &&
+			ShowGameplayMenu == true)
 			ShowGameplayMenu = false;
 	}
 	
@@ -74,18 +84,20 @@ public class Gameplay_Controller : MonoBehaviour {
 	}
 	
 	void OnGUI(){
-		GUI.Box (new Rect(10,10,110,150), "Game Menu");
-		
-		if(GUI.Button (new Rect(20,40,90,20), "Close Menu"))
-			ShowGameplayMenu = false;
-		
-		if(GUI.Button (new Rect(20,70,90,20), "Restart Level"))
-			Application.LoadLevel("02");
-		
-		if(GUI.Button (new Rect(20,100,90,20), "Main Menu"))
-			Application.LoadLevel("MainMenu");
-		
-		if(GUI.Button (new Rect(20,130,90,20), "Exit"))
-			Application.Quit();
+		if(ShowGameplayMenu){
+			GUI.Box (new Rect(10,10,110,150), "Game Menu");
+			
+			if(GUI.Button (new Rect(20,40,90,20), "Close Menu"))
+				ShowGameplayMenu = false;
+			
+			if(GUI.Button (new Rect(20,70,90,20), "Restart Level"))
+				Application.LoadLevel("02");
+			
+			if(GUI.Button (new Rect(20,100,90,20), "Main Menu"))
+				Application.LoadLevel("MainMenu");
+			
+			if(GUI.Button (new Rect(20,130,90,20), "Exit"))
+				Application.Quit();
+		}
 	}
 }
