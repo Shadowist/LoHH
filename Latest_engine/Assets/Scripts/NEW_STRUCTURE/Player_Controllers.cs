@@ -37,6 +37,9 @@ public class Player_Controllers : MonoBehaviour {
 	public KeyCode Left = KeyCode.LeftArrow;
 	public KeyCode Right = KeyCode.RightArrow;
 	public float keyboardSpeedAdjust = 1.5f;
+	public int keyboardRotationSpeed = 5;
+	private bool keyboardRotationActive = false;
+	private float movementDirection;
 	
 	private Vector3 moveTester;
 	private bool isMoveTesterAssigned = false;
@@ -65,7 +68,7 @@ public class Player_Controllers : MonoBehaviour {
 				}
 			}
 			
-			//LATERAL - CONTROLLER
+			///////////////////////////////LATERAL - CONTROLLER
             state = GamePad.GetState(playerNumber);
             movement.x = state.ThumbSticks.Left.X;
             movement.z = state.ThumbSticks.Left.Y;
@@ -73,7 +76,7 @@ public class Player_Controllers : MonoBehaviour {
 			moveTester = transform.position;
 			isMoveTesterAssigned = true;
 			
-			//LATERAL - KEYBOARD
+			///////////////////////////////LATERAL - KEYBOARD
 			if(movement.x == 0 && movement.z == 0){
 				if(Input.GetKey(Up))
 					movement.z += keyboardSpeedAdjust;
@@ -88,8 +91,9 @@ public class Player_Controllers : MonoBehaviour {
 				transform.position += movement*Time.deltaTime*playerSpeed;
 			}
 			
-			//LATERAL - END
-
+			///////////////////////////////LATERAL - END
+			
+			///////////////////////////////ROTATIONS - CONTROLLER
             targetDir = Mathf.Atan(state.ThumbSticks.Right.Y / state.ThumbSticks.Right.X);
             targetDir *= Mathf.Rad2Deg;
 
@@ -102,6 +106,9 @@ public class Player_Controllers : MonoBehaviour {
                 quadrant = 3;
             else if (state.ThumbSticks.Right.Y < 0 && state.ThumbSticks.Right.X >= 0)
                 quadrant = 4;
+			else if(state.ThumbSticks.Right.Y == 0 && state.ThumbSticks.Right.X == 0)
+				keyboardRotationActive = true;
+			
 
             //Convert to 0-360 degrees
             switch (quadrant) {
@@ -122,14 +129,59 @@ public class Player_Controllers : MonoBehaviour {
 			currentDir.x = 0;
             currentDir.y = -targetDir+90;
 			currentDir.z = 0;
-
-            if (!float.IsNaN(currentDir.y))
-                transform.eulerAngles = currentDir;
-        } else if (!movementEnabled && !hasBeenTagged) {
-			Debug.Log ("Runner has been tagged!");
 			
-			gameplayController.IncRunnersTagged();
-			hasBeenTagged = true;
-		}
+			if (!float.IsNaN(currentDir.y))
+                transform.eulerAngles = currentDir;
+	        } else if (!movementEnabled && !hasBeenTagged) {
+				Debug.Log ("Runner has been tagged!");
+				
+				gameplayController.IncRunnersTagged();
+				hasBeenTagged = true;
+			}
+			
+			///////////////////////////////ROTATIONS - KEYBOARD
+			
+			if(keyboardRotationActive){
+				//Determine quadrant
+	            if (movement.y >= 0 && movement.x >= 0)
+	                quadrant = 1;
+	            else if (movement.y >= 0 && movement.x < 0)
+	                quadrant = 2;
+	            else if (movement.y < 0 && movement.x < 0)
+	                quadrant = 3;
+	            else if (movement.y < 0 && movement.x >= 0)
+	                quadrant = 4;
+				}
+			
+				//Convert to 0-360 degrees
+	            switch (quadrant) {
+	                case 2:
+	                    targetDir += 180;
+	                    break;
+	                case 3:
+	                    targetDir += 180;
+	                    break;
+	                case 4:
+	                    targetDir += 360;
+	                    break;
+	                default:
+	                    break;
+            }
+		
+			movementDirection = Vector3.Angle(Vector3.zero, movement);
+		
+			currentDir = transform.eulerAngles;
+			currentDir.x = 0;
+			
+				
+			if(Mathf.DeltaAngle(currentDir.y, movementDirection) != 0)
+				Mathf.MoveTowardsAngle(currentDir.y, movementDirection, keyboardRotationSpeed*Time.deltaTime);
+		
+			currentDir.z = 0;
+			
+			///////////////////////////////ROTATIONS - END
+			
+
+            
 	}
 }

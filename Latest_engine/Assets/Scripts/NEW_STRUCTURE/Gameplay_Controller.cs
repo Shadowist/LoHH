@@ -74,7 +74,7 @@ public class Gameplay_Controller : MonoBehaviour {
 	}
 	
 	void OnGUI(){
-		GUI.Box (new Rect(10,10,100,90), "Game Menu");
+		GUI.Box (new Rect(10,10,110,150), "Game Menu");
 		
 		if(GUI.Button (new Rect(20,40,90,20), "Close Menu"))
 			ShowGameplayMenu = false;
@@ -82,7 +82,10 @@ public class Gameplay_Controller : MonoBehaviour {
 		if(GUI.Button (new Rect(20,70,90,20), "Restart Level"))
 			Application.LoadLevel("02");
 		
-		if(GUI.Button (new Rect(20,100,90,20), "Exit"))
+		if(GUI.Button (new Rect(20,100,90,20), "Main Menu"))
+			Application.LoadLevel("MainMenu");
+		
+		if(GUI.Button (new Rect(20,130,90,20), "Exit"))
 			Application.Quit();
 	}
 }
