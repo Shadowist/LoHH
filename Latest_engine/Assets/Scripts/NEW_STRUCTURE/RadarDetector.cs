@@ -228,15 +228,15 @@ public class RadarDetector : MonoBehaviour
 		//Debug.Log ("Trigger detected");
 			
 		if(collision.gameObject.name == "Player 1"){
-			Debug.Log("Player 1_Stay");
+			//Debug.Log("Player 1_Stay");
 			playerOneDetect = true;
 		}
 		if(collision.gameObject.name == "Player 2"){
-			Debug.Log("Player 2_Stay");
+			//Debug.Log("Player 2_Stay");
 			playerTwoDetect = true;
 		}
 		if(collision.gameObject.name == "Player 3"){
-			Debug.Log("Player 3_Stay");
+			//Debug.Log("Player 3_Stay");
 			playerThreeDetect = true;
 		}	
 	}
@@ -245,15 +245,15 @@ public class RadarDetector : MonoBehaviour
 	{
 		if(uncollision.gameObject.name != null){
 			if(uncollision.gameObject.name == "Player 1"){
-				Debug.Log("Player 1_Unhit");
+				//Debug.Log("Player 1_Unhit");
 				playerOneDetect = false;
 			}
 			if(uncollision.gameObject.name == "Player 2"){
-				Debug.Log("Player 2_Unhit");
+				//Debug.Log("Player 2_Unhit");
 				playerTwoDetect = false;
 			}
 			if(uncollision.gameObject.name == "Player 3"){
-				Debug.Log("Player 3_Unhit");
+				//Debug.Log("Player 3_Unhit");
 				playerThreeDetect = false;
 			}
 		}

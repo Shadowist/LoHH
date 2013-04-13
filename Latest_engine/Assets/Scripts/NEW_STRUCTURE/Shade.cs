@@ -3,6 +3,7 @@ using System.Collections;
 using XInputDotNetPure;
 
 [RequireComponent (typeof(BoxCollider))]
+[RequireComponent (typeof(AudioSource))]
 public class Shade : Player_Controllers {
 	//Character Controller
 	
@@ -31,6 +32,9 @@ public class Shade : Player_Controllers {
     private FlashlightScript targetFlashlight;
 	private AudioSource targetAudioSource;
 	public AudioClip killSound;
+	public float killSoundVolume = 1.0f;
+	public AudioClip boundaryCue;
+	public float boundaryCueVolume = 1.0f;
 	
 	// Use this for initialization
 	void Start () {
@@ -102,28 +106,51 @@ public class Shade : Player_Controllers {
 	
 	//COLLISION CHECKS
 	void OnTriggerEnter(Collider targetCollider) {
-		
+				
 		//When shade touches scouts
-		if(targetCollider != null && targetCollider.gameObject.tag == "Scout"){
+		if(targetCollider.gameObject.tag == "Scout"){
 	        target = targetCollider.gameObject.GetComponent("Scouts") as Scouts;
 	        targetFlashlight = targetCollider.gameObject.GetComponent("FlashlightScript") as FlashlightScript;
 			targetAudioSource = targetCollider.gameObject.GetComponent("AudioSource") as AudioSource;
 			
-			if(target != null && targetFlashlight != null && targetAudioSource != null){
-		        if(target.movementEnabled){ //FUUUUUUUUUU
-					target.animation.Play("faint",PlayMode.StopAll);
-					target.audio.PlayOneShot(target.killSound);
-					audio.PlayOneShot(killSound);
-				}
-				
-				target.movementEnabled = false;
-		        targetFlashlight.isActivated = false;
-				targetAudioSource.enabled = false;
-				
-		        GamePad.SetVibration(0, 1, 1);
+
+	        if(target.movementEnabled){ //FUUUUUUUUUU
+				target.animation.Play("faint",PlayMode.StopAll);
+				target.audio.PlayOneShot(target.killSound);
+				audio.PlayOneShot(killSound);
 			}
+			
+			target.movementEnabled = false;
+	        targetFlashlight.isActivated = false;
+			targetAudioSource.enabled = false;
+			
+	        GamePad.SetVibration(0, 1, 1);
+
 		}
 		//Scout/Shade interaction END
+		
+		if(targetCollider.gameObject.tag == "GameplayArea"){
+			
+			audio.PlayOneShot(boundaryCue, boundaryCueVolume);
+			
+			GamePad.SetVibration(playerNumber, 1, 1);
+			
+			print ("LOOOOOL OUT OF BOUNDS");
+			if(movement.x > 0)
+				movement.x = -5;
+			else if(movement.x < 0)
+				movement.x = 5;
+			if(movement.z > 0)
+				movement.z = -5;
+			else if(movement.z < 0)
+				movement.z = 5;
+			
+			movement.y = 0;
+			
+			transform.position += movement;
+			
+			GamePad.SetVibration(playerNumber, 0 ,0);
+		}
     }
 	
 	void OnApplicationQuit () {

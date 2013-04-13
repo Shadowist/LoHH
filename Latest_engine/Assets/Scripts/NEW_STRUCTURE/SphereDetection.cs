@@ -139,46 +139,47 @@ public class SphereDetection : MonoBehaviour {
 	
 	void OnTriggerStay (Collider collision) {
 		//Debug.Log ("Trigger detected");
-		
+		if(collision != null && collision.gameObject.tag == "Scout"){
 		//print (collision);
 		targetCollision = collision.gameObject.GetComponent("Translating") as Translating;
 		
 		if(collision.gameObject.name == "Player 1"){
-			Debug.Log("Player 1_Stay");
+			//Debug.Log("Player 1_Stay");
 			playerOneDetect = true;
 			
 			if(targetCollision.movementEnabled)
 				collision.gameObject.animation.Play("startle", PlayMode.StopAll);
 		}
 		if(collision.gameObject.name == "Player 2"){
-			Debug.Log("Player 2_Stay");
+			//Debug.Log("Player 2_Stay");
 			playerTwoDetect = true;
 			
 			if(targetCollision.movementEnabled)
 				collision.gameObject.animation.Play("startle", PlayMode.StopAll);
 		}
 		if(collision.gameObject.name == "Player 3"){
-			Debug.Log("Player 3_Stay");
+			//Debug.Log("Player 3_Stay");
 			playerThreeDetect = true;
 			
 			if(targetCollision.movementEnabled)
 				collision.gameObject.animation.Play("startle", PlayMode.StopAll);
 		}			
+			}
 	}
 	
 	void OnTriggerExit(Collider uncollision)
 	{
 		
 		if(uncollision.gameObject.name == "Player 1"){
-			Debug.Log("Player 1_Unhit");
+			//Debug.Log("Player 1_Unhit");
 			playerOneDetect = false;
 		}
 		if(uncollision.gameObject.name == "Player 2"){
-			Debug.Log("Player 2_Unhit");
+			//Debug.Log("Player 2_Unhit");
 			playerTwoDetect = false;
 		}
 		if(uncollision.gameObject.name == "Player 3"){
-			Debug.Log("Player 3_Unhit");
+			//Debug.Log("Player 3_Unhit");
 			playerThreeDetect = false;
 		}
 	}

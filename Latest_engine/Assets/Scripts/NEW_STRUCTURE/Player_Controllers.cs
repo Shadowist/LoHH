@@ -9,7 +9,7 @@ public class Player_Controllers : MonoBehaviour {
 	
 	//Movement variables
 	public float playerSpeed = 3.5f;
-	private Vector3 movement = Vector3.zero;
+	protected Vector3 movement = Vector3.zero;
 
     public bool movementEnabled = true;
 	
@@ -174,25 +174,24 @@ public class Player_Controllers : MonoBehaviour {
 		
 			currentDir.x = 0;
 		
-			if(Input.GetKey(Right))
-				currentDir.y = 0;
-			else if(Input.GetKey(Right) && Input.GetKey(Up))
+			if(Input.GetKey(Right) && Input.GetKey(Up))
 				currentDir.y = 45;
-			else if(Input.GetKey(Up))
-				currentDir.y = 90;
 			else if(Input.GetKey(Up) && Input.GetKey(Left))
 				currentDir.y = 135;
-			else if(Input.GetKey(Left))
-				currentDir.y = 180;
 			else if(Input.GetKey(Left) && Input.GetKey(Down))
 				currentDir.y = 225;
-			else if(Input.GetKey(Down))
-				currentDir.y = 270;
 			else if(Input.GetKey(Down) && Input.GetKey(Right))
 				currentDir.y = 315;
+			else if(Input.GetKey(Right))
+				currentDir.y = 0;
+			else if(Input.GetKey(Up))
+				currentDir.y = 90;
+			else if(Input.GetKey(Left))
+				currentDir.y = 180;
+			else if(Input.GetKey(Down))
+				currentDir.y = 270;
 		
 			currentDir.y = -currentDir.y+90;
-		
 			currentDir.z = 0;
 		
 			if (!float.IsNaN(currentDir.y))
