@@ -62,8 +62,7 @@ public class Animatic : MonoBehaviour {
 				//Destroy(gameObject);
 			} else {
 				if(index <= 10)
-					renderer.material.mainTexture = Slides[index];
-					
+					renderer.material.mainTexture = Slides[index];	
 				index++;
 			}
 			
