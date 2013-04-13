@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Collections;
 using XInputDotNetPure;
 
+[RequireComponent(typeof(AudioSource))]
 public class Gameplay_Controller : MonoBehaviour {
 	private int coffinsTagged = 0;
 	private int runnersTagged = 0;
@@ -13,6 +14,10 @@ public class Gameplay_Controller : MonoBehaviour {
 	public GameObject mainAnimatic;
 	public Texture2D runnersWin;
 	public Texture2D monsterWins;
+	
+	public float winnerClipVolume = 0.75f;
+	public AudioClip runnersWinAudio;
+	public AudioClip monsterWinsAudio;
 	
 	//GUI!
 	private bool ShowGameplayMenu = true;
@@ -29,11 +34,13 @@ public class Gameplay_Controller : MonoBehaviour {
 			winReported = true;
 			mainAnimatic.renderer.material.mainTexture = runnersWin;
 			mainAnimatic.SetActive(true);
+			audio.PlayOneShot(runnersWinAudio, winnerClipVolume);
 		} else if (runnersTagged == 3) {
 			Debug.Log("Monster wins!");
 			winReported = true;
 			mainAnimatic.renderer.material.mainTexture = monsterWins;
 			mainAnimatic.SetActive(true);
+			audio.PlayOneShot(monsterWinsAudio, winnerClipVolume);
 		}
 		
 		if(winReported == true)

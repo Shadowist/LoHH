@@ -130,17 +130,10 @@ public class Player_Controllers : MonoBehaviour {
             currentDir.y = -targetDir+90;
 			currentDir.z = 0;
 			
-			if (!float.IsNaN(currentDir.y))
-                transform.eulerAngles = currentDir;
-	        } else if (!movementEnabled && !hasBeenTagged) {
-				Debug.Log ("Runner has been tagged!");
-				
-				gameplayController.IncRunnersTagged();
-				hasBeenTagged = true;
-			}
+
 			
 			///////////////////////////////ROTATIONS - KEYBOARD
-			
+			/*
 			if(keyboardRotationActive){
 				//Determine quadrant
 	            if (movement.y >= 0 && movement.x >= 0)
@@ -173,12 +166,43 @@ public class Player_Controllers : MonoBehaviour {
 			currentDir = transform.eulerAngles;
 			currentDir.x = 0;
 			
-				
 			if(Mathf.DeltaAngle(currentDir.y, movementDirection) != 0)
 				Mathf.MoveTowardsAngle(currentDir.y, movementDirection, keyboardRotationSpeed*Time.deltaTime);
 		
 			currentDir.z = 0;
-			
+			*/
+		
+			currentDir.x = 0;
+		
+			if(Input.GetKey(Right))
+				currentDir.y = 0;
+			else if(Input.GetKey(Right) && Input.GetKey(Up))
+				currentDir.y = 45;
+			else if(Input.GetKey(Up))
+				currentDir.y = 90;
+			else if(Input.GetKey(Up) && Input.GetKey(Left))
+				currentDir.y = 135;
+			else if(Input.GetKey(Left))
+				currentDir.y = 180;
+			else if(Input.GetKey(Left) && Input.GetKey(Down))
+				currentDir.y = 225;
+			else if(Input.GetKey(Down))
+				currentDir.y = 270;
+			else if(Input.GetKey(Down) && Input.GetKey(Right))
+				currentDir.y = 315;
+		
+			currentDir.y = -currentDir.y+90;
+		
+			currentDir.z = 0;
+		
+			if (!float.IsNaN(currentDir.y))
+                transform.eulerAngles = currentDir;
+	        } else if (!movementEnabled && !hasBeenTagged) {
+				Debug.Log ("Runner has been tagged!");
+				
+				gameplayController.IncRunnersTagged();
+				hasBeenTagged = true;
+			}
 			///////////////////////////////ROTATIONS - END
 			
 
