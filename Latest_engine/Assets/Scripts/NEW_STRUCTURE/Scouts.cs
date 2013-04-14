@@ -18,6 +18,7 @@ public class Scouts : Player_Controllers {
 	private float flickerSpeed = 4f;
 	private float rechargeTime = 10f;
 	private float flickerLength = 0.5f;
+    public KeyCode ActivateFlashlight = KeyCode.RightControl;
 	//public KeyCode activateKey = KeyCode.E;
 	
 	
@@ -38,6 +39,8 @@ public class Scouts : Player_Controllers {
 	public AudioClip heartbeat2ndClosest;
 	public AudioClip heartbeat3rdClosest;
 	public AudioClip heartbeat4thClosest;
+    public AudioClip startledAudio1;
+    public AudioClip startledAudio2;
 
 	void Start()
 	{
@@ -54,36 +57,47 @@ public class Scouts : Player_Controllers {
 	}
 	void Update ()
 	{
-        if (isActivated) {
+        if (gameplayActive)
+        {
+            if (isActivated)
+            {
 
-            if (!flashLight.enabled)
-                flashLight.enabled = true;
-            if (!areaLight.enabled)
-                areaLight.enabled = true;
+                if (!flashLight.enabled)
+                    flashLight.enabled = true;
+                if (!areaLight.enabled)
+                    areaLight.enabled = true;
 
-            if (GamePad.GetState(playerNumber).Buttons.A == ButtonState.Pressed) {
-                if (isLightCharged) {
-                    Debug.Log("Flashlight On!");
-                    isLightOn = true;
-                    flashLight.range = maxSpotRange;
-                    flashLight.intensity = maxSpotIntensity;
-                    flashLight.spotAngle = 45;
-                    flashLight.color = (Color.white * new Color32(242, 211, 128, 255));
-                    areaLight.range = maxAreaRange;
-                    areaLight.intensity = maxAreaIntensity;
-                    areaLight.color = new Color32(242, 211, 128, 255);
-                } else {
-                    Debug.Log("You're flashlight is not charged!");
+                if (GamePad.GetState(playerNumber).Buttons.A == ButtonState.Pressed || Input.GetKeyDown(ActivateFlashlight))
+                {
+                    if (isLightCharged)
+                    {
+                        Debug.Log("Flashlight On!");
+                        isLightOn = true;
+                        flashLight.range = maxSpotRange;
+                        flashLight.intensity = maxSpotIntensity;
+                        flashLight.spotAngle = 45;
+                        flashLight.color = (Color.white * new Color32(242, 211, 128, 255));
+                        areaLight.range = maxAreaRange;
+                        areaLight.intensity = maxAreaIntensity;
+                        areaLight.color = new Color32(242, 211, 128, 255);
+                    }
+                    else
+                    {
+                        Debug.Log("You're flashlight is not charged!");
+                    }
+                }
+                if (isLightOn)
+                {
+                    ChargeFlashlight();
                 }
             }
-            if (isLightOn) {
-                ChargeFlashlight();
+            else
+            {
+                if (flashLight.enabled)
+                    flashLight.enabled = false;
+                //if (areaLight.enabled)
+                //    areaLight.enabled = false;
             }
-        } else {
-            if (flashLight.enabled)
-                flashLight.enabled = false;
-            //if (areaLight.enabled)
-            //    areaLight.enabled = false;
         }
 	}
 	

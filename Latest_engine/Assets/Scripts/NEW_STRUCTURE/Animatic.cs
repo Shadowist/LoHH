@@ -2,8 +2,9 @@ using UnityEngine;
 using System.Collections;
 using XInputDotNetPure;
 
-public class Animatic : MonoBehaviour {
 
+[RequireComponent(typeof(AudioSource))]
+public class Animatic : MonoBehaviour {
 
     //LOL COULD BE A FUCKING ARRAY DURRRRRRRRR
     public Texture2D[] Slides = new Texture2D[13];
@@ -13,6 +14,7 @@ public class Animatic : MonoBehaviour {
     private float timeCurrent;
     private float timeRecorded;
     private int index = 0;
+    public AudioClip animaticMusic;
     //private int timesPressed = 0;
     //private bool isPrimed = true;
 	
@@ -52,13 +54,29 @@ public class Animatic : MonoBehaviour {
 			buttonDown = true;
 		}
 		*/
-		
+
+        if (!audio.isPlaying)
+        {
+            GetComponent<AudioListener>().enabled = true;
+            audio.clip = animaticMusic;
+            audio.Play();
+        }
+
 		if(Input.GetMouseButtonDown(0) || GamePad.GetState(PlayerIndex.One).Buttons.A == ButtonState.Pressed ||
             GamePad.GetState(PlayerIndex.Two).Buttons.A == ButtonState.Pressed ||
             GamePad.GetState(PlayerIndex.Three).Buttons.A == ButtonState.Pressed ||
             GamePad.GetState(PlayerIndex.Four).Buttons.A == ButtonState.Pressed){
 			if(index >= 11){
 				gameObject.SetActive(false);
+                audio.Stop();
+                GetComponent<AudioListener>().enabled = false;
+                GameObject.Find("Monster").GetComponent<AudioListener>().enabled = true;
+                GameObject.Find("Ambient").audio.Play();
+                GameObject.Find("GAMEPLAY_CONTROLLER").GetComponent<Gameplay_Controller>().gameplayActive = true;
+                GameObject.Find("Player 1").GetComponent<Scouts>().gameplayActive = true;
+                GameObject.Find("Player 2").GetComponent<Scouts>().gameplayActive = true;
+                GameObject.Find("Player 3").GetComponent<Scouts>().gameplayActive = true;
+                GameObject.Find("Monster").GetComponent<Shade>().gameplayActive = true;
 				//Destroy(gameObject);
 			} else {
 				if(index <= 10)

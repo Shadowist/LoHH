@@ -2,12 +2,20 @@ using UnityEngine;
 using System.Collections;
 using XInputDotNetPure;
 
+[RequireComponent(typeof(AudioSource))]
+[RequireComponent(typeof(AudioListener))]
 public class MainMenu : MonoBehaviour {
 
 	private int xPosition = 10;
 	private int yPosition = 10;
 	
 	private int menuIndex = 1;
+
+    public AudioClip mainMenuMusic;
+    public AudioClip menuButtonPress1;
+    public AudioClip menuButtonPress2;
+
+    private bool buttonPressed = false;
 	
 	// Use this for initialization
 	void Start () {
@@ -16,7 +24,12 @@ public class MainMenu : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+        if(!buttonPressed)
+            if (!audio.isPlaying)
+            {
+                audio.clip = mainMenuMusic;
+                audio.Play();
+            }
 		
 		if(	Input.GetKeyDown(KeyCode.DownArrow) ||
 			GamePad.GetState(PlayerIndex.One).DPad.Down == ButtonState.Pressed ||
@@ -68,11 +81,31 @@ public class MainMenu : MonoBehaviour {
 		}
 		
 		if(menuIndex == 2){
-			if(GUI.Button (new Rect(xPosition+10,yPosition+60,90,20), "New Game"))
-				Application.LoadLevel("02");
-		
-			if(GUI.Button (new Rect(xPosition+10,yPosition+90,90,20), "->Exit"))
-				Application.Quit();
+            if (GUI.Button(new Rect(xPosition + 10, yPosition + 60, 90, 20), "New Game"))
+            {
+                audio.Stop();
+                if (Random.Range(0, 1) == 1)
+                    audio.PlayOneShot(menuButtonPress1, 1.0f);
+                else
+                    audio.PlayOneShot(menuButtonPress2, 1.0f);
+                buttonPressed = true;
+
+                if(!audio.isPlaying)
+                    Application.LoadLevel("02");
+            }
+
+            if (GUI.Button(new Rect(xPosition + 10, yPosition + 90, 90, 20), "->Exit"))
+            {
+                audio.Stop();
+                if (Random.Range(0, 1) == 1)
+                    audio.PlayOneShot(menuButtonPress1, 1.0f);
+                else
+                    audio.PlayOneShot(menuButtonPress2, 1.0f);
+                buttonPressed = true;
+
+                if(!audio.isPlaying)
+                    Application.Quit();
+            }
 		}
 	}
 }
