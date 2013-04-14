@@ -5,6 +5,7 @@ using System.Collections;
 using XInputDotNetPure;
 
 [RequireComponent(typeof(AudioSource))]
+[RequireComponent(typeof(AudioListener))]
 public class Gameplay_Controller : MonoBehaviour {
 	private int coffinsTagged = 0;
 	private int runnersTagged = 0;
@@ -18,9 +19,10 @@ public class Gameplay_Controller : MonoBehaviour {
 	public float winnerClipVolume = 0.75f;
 	public AudioClip runnersWinAudio;
 	public AudioClip monsterWinsAudio;
+	private bool hasBeenPlayed = false;
 	
 	//GUI!
-	private bool ShowGameplayMenu = true;
+	private bool ShowGameplayMenu = false;
 	private int menuIndex = 1;
 	
 	// Use this for initialization
@@ -32,16 +34,30 @@ public class Gameplay_Controller : MonoBehaviour {
 	void Update () {
 		if(coffinsTagged == 4){
 			Debug.Log("Runners win!");
+			GetComponent<AudioListener>().enabled = true;
 			winReported = true;
 			mainAnimatic.renderer.material.mainTexture = runnersWin;
 			mainAnimatic.SetActive(true);
-			audio.PlayOneShot(runnersWinAudio, winnerClipVolume);
-		} else if (runnersTagged == 3) {
+			if(!audio.isPlaying && !hasBeenPlayed){
+				audio.volume = 1.0f;
+				audio.clip = runnersWinAudio;
+				audio.Play();
+				hasBeenPlayed = true;
+			}
+			ShowGameplayMenu = true;
+		} else if (runnersTagged == 3 && !hasBeenPlayed) {
 			Debug.Log("Monster wins!");
+			GetComponent<AudioListener>().enabled = true;
 			winReported = true;
 			mainAnimatic.renderer.material.mainTexture = monsterWins;
 			mainAnimatic.SetActive(true);
-			audio.PlayOneShot(monsterWinsAudio, winnerClipVolume);
+			if(!audio.isPlaying){
+				audio.volume = 1.0f;
+				audio.clip = monsterWinsAudio;
+				audio.Play();
+				hasBeenPlayed = true;
+			}
+			ShowGameplayMenu = true;
 		}
 		
 		if(winReported == true)
@@ -120,7 +136,7 @@ public class Gameplay_Controller : MonoBehaviour {
 	
 	public void IncCoffinsTagged(){
 		coffinsTagged++;
-		print ("Coffins tagged: " + coffinsTagged);
+		Debug.Log ("Coffins tagged: " + coffinsTagged);
 	}
 	
 	public void DecCoffinsTagged(){
@@ -133,7 +149,7 @@ public class Gameplay_Controller : MonoBehaviour {
 	
 	public void IncRunnersTagged(){
 		runnersTagged++;
-		print ("Scouts tagged: " + runnersTagged);
+		Debug.Log ("Scouts tagged: " + runnersTagged);
 	}
 	
 	public void DecRunnersTagged(){

@@ -1,0 +1,1 @@
+Trigger this track to play when the slides end, and the match starts (i.e. when players are able to control their characters)

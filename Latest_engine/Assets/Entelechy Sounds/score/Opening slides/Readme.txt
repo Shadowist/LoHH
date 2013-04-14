@@ -1,0 +1,2 @@
+This track should play once the player hits the "new game" button on the main menu.  
+The track will play over the opening slides, and should be toggled off once the last slide ends and the match begins

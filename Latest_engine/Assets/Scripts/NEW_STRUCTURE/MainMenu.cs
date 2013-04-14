@@ -7,7 +7,6 @@ public class MainMenu : MonoBehaviour {
 	private int xPosition = 10;
 	private int yPosition = 10;
 	
-	private int menuItems = 2;
 	private int menuIndex = 1;
 	
 	// Use this for initialization

@@ -32,6 +32,12 @@ public class Scouts : Player_Controllers {
 	
 	private coffin targetCoffin;
 	public AudioClip killSound;
+	
+	//Sensor type stuff with shade
+	public AudioClip heartbeatClosest;
+	public AudioClip heartbeat2ndClosest;
+	public AudioClip heartbeat3rdClosest;
+	public AudioClip heartbeat4thClosest;
 
 	void Start()
 	{
@@ -43,6 +49,8 @@ public class Scouts : Player_Controllers {
 			areaLight.range = minAreaRange;
 			areaLight.intensity = minAreaIntensity;
 			areaLight.color = new Color32(242,211,128,255);
+		
+		audio.maxDistance = 100;
 	}
 	void Update ()
 	{

@@ -19,13 +19,10 @@ public class Shade : Player_Controllers {
 	private float distance2;
 	private float distance3;
 	
-	
 	public float rotationSpeed = 300.0f;
 	
 	private GamePadState state;
 	
-	private int closestTarget = 0;
-
 	public bool vibrationActive = true;
 	
 	private Scouts target;
@@ -36,6 +33,22 @@ public class Shade : Player_Controllers {
 	public AudioClip boundaryCue;
 	public float boundaryCueVolume = 1.0f;
 	
+	//Sensor stuff
+	private string[] scoutList = new string[3]{"Player 1","Player 2","Player 3"};
+	public float coneSensorAngle = 15f;
+	public float coneMaxDistance = 50f;
+	public float coneClosest = 0.25f;
+	public float cone2ndClosest = 0.50f;
+	public float cone3rdClosest = 0.75f;
+	public float coneClosestVolume = 1.0f;
+	public float cone2ndClosestVolume = 1.0f;
+	public float cone3rdClosestVolume = 1.0f;
+	public float cone4thClosestVolume = 1.0f;
+	public bool controlVibeClosest = true;
+	public bool controlVibe2ndClosest = false;
+	public bool controlVibe3rdClosest = false;
+	public bool controlVibe4thClosest = false;
+	
 	// Use this for initialization
 	void Start () {
 	
@@ -44,14 +57,13 @@ public class Shade : Player_Controllers {
 	// Update is called once per frame
 	void Update () {
 		
-		
-		
+		//////////////////////////////////////MOVEMENT
 		//Vibration!
-		distance1 = Mathf.Abs(target1.transform.position.magnitude - transform.position.magnitude);
-		distance2 = Mathf.Abs(target2.transform.position.magnitude - transform.position.magnitude);
-		distance3 = Mathf.Abs(target3.transform.position.magnitude - transform.position.magnitude);
+		//distance1 = Mathf.Abs(target1.transform.position.magnitude - transform.position.magnitude);
+		//distance2 = Mathf.Abs(target2.transform.position.magnitude - transform.position.magnitude);
+		//distance3 = Mathf.Abs(target3.transform.position.magnitude - transform.position.magnitude);
 		//distance4 = Mathf.Abs(target4.transform.position.magnitude - transform.position.magnitude);
-		
+		/*
 		if((distance1 < maxDistance) || (distance2 < maxDistance) || (distance3 < maxDistance)) {
 			if((distance1 < distance2) && (distance1 < distance3))
 				closestTarget = 1;
@@ -73,7 +85,7 @@ public class Shade : Player_Controllers {
 				controllerVib = (maxDistance - distance3)/maxDistance;
 				break;
 			}
-			
+			*/
 			/*
 			if(heartBeatVibrate){
 				controllerVib = Mathf.Sin(sinTime);
@@ -82,26 +94,107 @@ public class Shade : Player_Controllers {
 			if(controllerVib == 0)
 				heartBeatVibrate = false;
 			*/
-            if (controllerVib < 0.5) {
+            /*if (controllerVib < 0.5) {
                 controllerVib = 0.25f;
                 //controllerVib = Mathf.Sin(currentTime * 10);
             } else if (controllerVib >= 0.5) {
                 controllerVib = 100;
             }else if(controllerVib <= -0.4)
 				controllerVib = 0;
-			
+			*/
 			
 			
 			//Debug.Log (controllerVib);
 			
 			//GamePad.SetVibration(0,controllerVib,controllerVib);
-			if(vibrationActive)
+			/*if(vibrationActive)
 				GamePad.SetVibration(0,controllerVib, controllerVib);
 			else
-				GamePad.SetVibration(0,0,0);
-		}
+				GamePad.SetVibration(0,0,0);*/
+		//}
 		
-		GamePad.SetVibration(0,0,0);
+		//GamePad.SetVibration(0,0,0);
+		//////////////////////////////////////MOVEMENT-END
+		
+		
+		
+		//////////////////////////////////////SENSORS
+		//currentDir.y holds current directional info
+		for(int i=0; i<scoutList.Length; i++){
+			GameObject scout = GameObject.Find(scoutList[i]);
+			Scouts scoutController = scout.GetComponent("Scouts") as Scouts;
+			
+			if(scoutController.movementEnabled){
+				Vector3 targetDir = scout.transform.position - transform.position;
+				float deltaAngle = Vector3.Angle(transform.forward, targetDir); //deltaAngle between shade and scouts
+				float distanceToScout = Vector3.Distance(transform.position, scout.transform.position);
+				
+				//Debug.Log (distanceToScout);
+				
+				float distanceClosest = coneMaxDistance * coneClosest;
+				float distance2ndClosest = coneMaxDistance * cone2ndClosest;
+				float distance3rdClosest = coneMaxDistance * cone3rdClosest;
+				
+				if(deltaAngle <= coneSensorAngle){
+					if(distanceToScout <=  distanceClosest){
+						if(!scout.audio.isPlaying){
+							scout.audio.volume = coneClosestVolume;
+							scout.audio.clip = scoutController.heartbeatClosest;
+							scout.audio.Play();
+						}
+						Debug.Log ("Scout Closest!");
+					} else if (distanceToScout <= distance2ndClosest){
+						if(!scout.audio.isPlaying){
+							scout.audio.volume = cone2ndClosestVolume;
+							scout.audio.clip = scoutController.heartbeat2ndClosest;
+							scout.audio.Play();
+						}
+						Debug.Log ("Scout 2nd Closest!");
+					} else if (distanceToScout <= distance3rdClosest){
+						if(!scout.audio.isPlaying){
+							scout.audio.volume = cone3rdClosestVolume;
+							scout.audio.clip = scoutController.heartbeat3rdClosest;
+							scout.audio.Play();
+						}
+						Debug.Log ("Scout 3rd Closest!");
+					} else if (distanceToScout <= maxDistance){
+						if(!scout.audio.isPlaying){
+							scout.audio.volume = cone4thClosestVolume;
+							scout.audio.clip = scoutController.heartbeat4thClosest;
+							scout.audio.Play();
+						}
+						Debug.Log ("Scout Furthest!");
+					}
+						
+				} else {
+					Debug.Log ("No Scout sensed!");
+				}
+				
+				if(distanceToScout <= distanceClosest)
+					if(controlVibeClosest)
+						GamePad.SetVibration(playerNumber, 1.0f, 1.0f);
+					else
+						GamePad.SetVibration(playerNumber, 0f, 0f);
+				else if(distanceToScout <= distance2ndClosest)
+					if(controlVibe2ndClosest)
+						GamePad.SetVibration(playerNumber, 1.0f, 1.0f);
+					else
+						GamePad.SetVibration(playerNumber, 0f, 0f);
+				else if(distanceToScout <= distance3rdClosest)
+					if(controlVibe3rdClosest)
+						GamePad.SetVibration(playerNumber, 1.0f, 1.0f);
+					else
+						GamePad.SetVibration(playerNumber, 0f, 0f);
+				else if(distanceToScout <= maxDistance)
+					if(controlVibe4thClosest)
+						GamePad.SetVibration(playerNumber, 1.0f, 1.0f);
+					else
+						GamePad.SetVibration(playerNumber, 0f, 0f);
+				else
+					GamePad.SetVibration(playerNumber, 0f, 0f);
+			}
+		}
+		//////////////////////////////////////SENSORS-END
 	}
 	
 	//COLLISION CHECKS
@@ -120,8 +213,9 @@ public class Shade : Player_Controllers {
 				audio.PlayOneShot(killSound);
 			}
 			
+			targetFlashlight.isActivated = false;
+			//target.flashLight.enabled = false;
 			target.movementEnabled = false;
-	        targetFlashlight.isActivated = false;
 			targetAudioSource.enabled = false;
 			
 	        GamePad.SetVibration(0, 1, 1);
@@ -135,7 +229,7 @@ public class Shade : Player_Controllers {
 			
 			GamePad.SetVibration(playerNumber, 1, 1);
 			
-			print ("LOOOOOL OUT OF BOUNDS");
+			Debug.Log ("LOOOOOL OUT OF BOUNDS");
 			if(movement.x > 0)
 				movement.x = -5;
 			else if(movement.x < 0)

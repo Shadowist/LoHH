@@ -30,7 +30,7 @@ public class Player_Controllers : MonoBehaviour {
     public PlayerIndex playerNumber = PlayerIndex.Two;
     private GamePadState state;
     private int quadrant;
-    private Vector3 currentDir = Vector3.zero;
+    protected Vector3 currentDir = Vector3.zero;
 	
 	public KeyCode Up = KeyCode.UpArrow;
 	public KeyCode Down = KeyCode.DownArrow;
@@ -38,7 +38,7 @@ public class Player_Controllers : MonoBehaviour {
 	public KeyCode Right = KeyCode.RightArrow;
 	public float keyboardSpeedAdjust = 1.5f;
 	public int keyboardRotationSpeed = 5;
-	private bool keyboardRotationActive = false;
+	//private bool keyboardRotationActive = false;
 	private float movementDirection;
 	
 	private Vector3 moveTester;
@@ -106,8 +106,8 @@ public class Player_Controllers : MonoBehaviour {
                 quadrant = 3;
             else if (state.ThumbSticks.Right.Y < 0 && state.ThumbSticks.Right.X >= 0)
                 quadrant = 4;
-			else if(state.ThumbSticks.Right.Y == 0 && state.ThumbSticks.Right.X == 0)
-				keyboardRotationActive = true;
+			//else if(state.ThumbSticks.Right.Y == 0 && state.ThumbSticks.Right.X == 0)
+			//	keyboardRotationActive = true;
 			
 
             //Convert to 0-360 degrees
@@ -124,10 +124,10 @@ public class Player_Controllers : MonoBehaviour {
                 default:
                     break;
             }
-
+			
             currentDir = transform.eulerAngles;
 			currentDir.x = 0;
-            currentDir.y = -targetDir+90;
+            currentDir.y = targetDir;
 			currentDir.z = 0;
 			
 
